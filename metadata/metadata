@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+set -e -o pipefail
+
+# Add repo specific metadata here.
+
+BASE_IMAGE_CONFIG_KEY_PREFIX="BASE_IMAGE"
+
+RELEASE_PACKAGE_NAME="Z-Wave JS UI"
+RELEASE_TAG_PACKAGE_NAME="zwave-js-ui"
+
+UPSTREAM_PACKAGE_NAME="Z-Wave JS UI"
+UPSTREAM_VERSION_CONFIG_KEY="ZWAVE_JS_UI_VERSION"
+UPSTREAM_CHECKSUM_CONFIG_KEY="ZWAVE_JS_UI_SHA256_CHECKSUM"
+UPSTREAM_GIT_REPO="https://github.com/zwave-js/zwave-js-ui"
+
+TEST_TYPE="background"
+TEST_CONTAINER_TYPE="zwave-js-ui"
+TEST_CONTAINER_START_WAIT_SECONDS="10"
+
+current_upstream_version() {
+    get_config_arg ${UPSTREAM_VERSION_CONFIG_KEY:?}
+}
+
+latest_upstream_version() {
+    git_remote_repo_latest_tag "${UPSTREAM_GIT_REPO:?}"
+}
+
+update_latest_upstream_version() {
+    local cur_ver="${1:?}"
+    local latest_ver="${2:?}"
+    local sha256_checksum="$(github_repo_archive_sha256_checksum ${UPSTREAM_GIT_REPO:?} ${latest_ver:?})"
+    echo "Updating ${UPSTREAM_PACKAGE_NAME:?} ${UPSTREAM_VERSION_CONFIG_KEY:?} '${cur_ver:?}' -> '${latest_ver:?}'"
+    set_config_arg "${UPSTREAM_VERSION_CONFIG_KEY:?}" "${latest_ver:?}"
+    set_config_arg "${UPSTREAM_CHECKSUM_CONFIG_KEY:?}" "${sha256_checksum:?}"
+    git add ${ARGS_FILE:?}
+}
+
+package_current_release_version() {
+    current_upstream_version
+}
+
+test_start_container() {
+    local container_name="${1:?}"
+    docker run \
+        --name ${container_name:?} \
+        --detach \
+        --rm \
+        --publish 127.0.0.1:8082:8091 \
+        ${IMAGE:?}
+}
+
+test_image_after_container_startup() {
+    local container_name="${1:?}"
+    test_http_endpoint "${container_name:?}" http 127.0.0.1 8082
+}
