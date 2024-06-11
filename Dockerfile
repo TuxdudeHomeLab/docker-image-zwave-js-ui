@@ -11,6 +11,7 @@ COPY scripts/start-zwave-js-ui.sh /root/
 ARG ZWAVE_JS_UI_VERSION
 ARG ZWAVE_JS_UI_SHA256_CHECKSUM
 
+# hadolint ignore=SC1091
 RUN \
     set -e -o pipefail \
     # Install build dependencies. \
