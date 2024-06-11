@@ -70,6 +70,8 @@ RUN --mount=type=bind,target=/build,from=builder,source=/opt \
 ENV USER=${USER_NAME}
 ENV PATH="/opt/bin:${PATH}"
 
+ENV NODE_ENV=production
+
 USER ${USER_NAME}:${GROUP_NAME}
 WORKDIR /home/${USER_NAME}
 CMD ["start-zwave-js-ui"]
