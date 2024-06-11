@@ -65,12 +65,18 @@ RUN --mount=type=bind,target=/build,from=builder,source=/opt \
     && cp -rf /build/zwave-js-ui-${ZWAVE_JS_UI_VERSION#v} /opt \
     && ln -sf /opt/zwave-js-ui-${ZWAVE_JS_UI_VERSION#v} /opt/zwave-js-ui \
     && ln -sf /opt/zwave-js-ui/start-zwave-js-ui.sh /opt/bin/start-zwave-js-ui \
-    && chown -R ${USER_NAME}:${GROUP_NAME:?} /opt/zwave-js-ui-${ZWAVE_JS_UI_VERSION#v}
+    && mkdir -p /data/zwavejs/{config,logs,store,backups} \
+    && chown -R ${USER_NAME}:${GROUP_NAME:?} /opt/zwave-js-ui-${ZWAVE_JS_UI_VERSION#v} /data/zwavejs
 
 ENV USER=${USER_NAME}
 ENV PATH="/opt/bin:${PATH}"
 
 ENV NODE_ENV=production
+
+ENV ZWAVEJS_EXTERNAL_CONFIG=/data/zwavejs/config
+ENV ZWAVEJS_LOGS_DIR=/data/zwavejs/logs
+ENV STORE_DIR=/data/zwavejs/store
+ENV BACKUPS_DIR=/data/zwavejs/backups
 
 EXPOSE 8091
 
