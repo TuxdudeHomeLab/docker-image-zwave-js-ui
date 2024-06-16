@@ -13,7 +13,7 @@ ARG ZWAVE_JS_UI_SHA256_CHECKSUM
 
 # hadolint ignore=SC1091
 RUN \
-    set -e -o pipefail \
+    set -E -e -o pipefail \
     # Install build dependencies. \
     && homelab install util-linux build-essential python3 \
     # Download and install the release. \
