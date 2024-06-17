@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -E -e -o pipefail
 
+set_umask() {
+    # Configure umask to allow write permissions for the group by default
+    # in addition to the owner.
+    umask 0002
+}
+
 start_zwave_js_ui () {
     source ${NVM_DIR:?}/nvm.sh
 
@@ -11,4 +17,5 @@ start_zwave_js_ui () {
     exec node server/bin/www
 }
 
+set_umask
 start_zwave_js_ui
