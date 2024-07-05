@@ -1,5 +1,5 @@
 BASE_IMAGE_NAME=tuxdude/homelab-node-base
-BASE_IMAGE_TAG=master
+BASE_IMAGE_TAG=0.2.9-bookworm-20240513-slim-node-22.3.0
 USER_NAME=zwavejsui
 GROUP_NAME=zwavejsui
 USER_ID=16009
