@@ -68,19 +68,17 @@ RUN --mount=type=bind,target=/build,from=builder,source=/opt \
     && mkdir -p /data/zwave-js-ui/{config,logs,store,backups} \
     && chown -R ${USER_NAME}:${GROUP_NAME:?} /opt/zwave-js-ui-${ZWAVE_JS_UI_VERSION#v} /data/zwave-js-ui
 
-ENV USER=${USER_NAME}
-ENV PATH="/opt/bin:${PATH}"
+EXPOSE 8091
 
 ENV NODE_ENV=production
-
 ENV ZWAVEJS_EXTERNAL_CONFIG=/data/zwave-js-ui/config
 ENV ZWAVEJS_LOGS_DIR=/data/zwave-js-ui/logs
 ENV STORE_DIR=/data/zwave-js-ui/store
 ENV BACKUPS_DIR=/data/zwave-js-ui/backups
 
-EXPOSE 8091
-
+ENV USER=${USER_NAME}
 USER ${USER_NAME}:${GROUP_NAME}
 WORKDIR /home/${USER_NAME}
+
 CMD ["start-zwave-js-ui"]
 STOPSIGNAL SIGQUIT
