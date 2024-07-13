@@ -53,10 +53,14 @@ ARG GROUP_NAME
 ARG USER_ID
 ARG GROUP_ID
 ARG ZWAVE_JS_UI_VERSION
+ARG PACKAGES_TO_INSTALL
 
 RUN --mount=type=bind,target=/build,from=builder,source=/opt \
+    set -E -e -o pipefail \
+    # Install dependencies. \
+    && homelab install ${PACKAGES_TO_INSTALL:?} \
     # Create the user and the group. \
-    homelab add-user \
+    && homelab add-user \
         ${USER_NAME:?} \
         ${USER_ID:?} \
         ${GROUP_NAME:?} \
