@@ -26,7 +26,7 @@ RUN \
         root \
     && pushd /opt/zwave-js-ui \
     && source "${NVM_DIR:?}/nvm.sh" \
-    && npm ci \
+    && npm ci --no-audit --no-fund --no-update-notifier \
     && npm_config_build_from_source=true npm rebuild @serialport/bindings-cpp \
     && npm run build \
     && npm prune --omit=dev \
