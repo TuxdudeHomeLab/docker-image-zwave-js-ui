@@ -14,6 +14,7 @@ ARG ZWAVE_JS_UI_SHA256_CHECKSUM
 # hadolint ignore=SC1091
 RUN \
     set -E -e -o pipefail \
+    && export HOMELAB_VERBOSE=y \
     # Install build dependencies. \
     && homelab install util-linux build-essential python3 \
     # Download and install the release. \
@@ -57,6 +58,7 @@ ARG PACKAGES_TO_INSTALL
 
 RUN --mount=type=bind,target=/build,from=builder,source=/opt \
     set -E -e -o pipefail \
+    && export HOMELAB_VERBOSE=y \
     # Install dependencies. \
     && homelab install ${PACKAGES_TO_INSTALL:?} \
     # Create the user and the group. \
