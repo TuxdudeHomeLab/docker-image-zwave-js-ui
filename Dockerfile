@@ -9,7 +9,7 @@ COPY scripts/start-zwave-js-ui.sh /root/
 ARG ZWAVE_JS_UI_VERSION
 ARG ZWAVE_JS_UI_SHA256_CHECKSUM
 
-# hadolint ignore=SC1091
+# hadolint ignore=SC1091,SC3044
 RUN \
     set -E -e -o pipefail \
     && export HOMELAB_VERBOSE=y \
@@ -52,6 +52,7 @@ ARG GROUP_ID
 ARG ZWAVE_JS_UI_VERSION
 ARG PACKAGES_TO_INSTALL
 
+# hadolint ignore=SC3009
 RUN --mount=type=bind,target=/build,from=builder,source=/opt \
     set -E -e -o pipefail \
     && export HOMELAB_VERBOSE=y \
